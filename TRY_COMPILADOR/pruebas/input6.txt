@@ -1,0 +1,17 @@
+int main() {
+	int a;
+    int b;
+    a = 2;
+    b = 7;
+
+    int main(){
+        int a;
+        a = b;
+        {
+            print("%d ",a*b);
+            b = 3;
+        }
+    }
+    print("%d ", a*b);
+
+}

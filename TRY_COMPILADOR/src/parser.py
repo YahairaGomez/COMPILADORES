@@ -10,14 +10,6 @@ class Parser:
         self.curr = tokens.pop(0)
         self.prev = None
 
-    def restorable(call):
-        @wraps(call)
-        def wrapper(self, *args, **kwargs):
-            state = pickle.dumps(self.__dict__)
-            result = call(self, *args, **kwargs)
-            self.__dict__ = pickle.loads(state)
-            return result
-        return wrapper
 
     def eat(self, class_):
         if self.curr.class_ == class_:
@@ -113,19 +105,6 @@ class Parser:
         self.eat(Class.RBRACE)
         return While(cond, block)
 
-    def for_(self):
-        self.eat(Class.FOR)
-        self.eat(Class.LPAREN)
-        init = self.id_()
-        self.eat(Class.SEMICOLON)
-        cond = self.logic()
-        self.eat(Class.SEMICOLON)
-        step = self.id_()
-        self.eat(Class.RPAREN)
-        self.eat(Class.LBRACE)
-        block = self.block()
-        self.eat(Class.RBRACE)
-        return For(init, cond, step, block)
 
     def block(self):
         nodes = []
@@ -162,13 +141,7 @@ class Parser:
             params.append(Decl(type_, id_))
         return Params(params)
 
-    def args(self):
-        args = []
-        while self.curr.class_ != Class.RPAREN:
-            if len(args) > 0:
-                self.eat(Class.COMMA)
-            args.append(self.expr())
-        return Args(args)
+
 
     def elems(self):
         elems = []
@@ -178,22 +151,7 @@ class Parser:
             elems.append(self.expr())
         return Elems(elems)
 
-    def return_(self):
-        self.eat(Class.RETURN)
-        expr = self.expr()
-        self.eat(Class.SEMICOLON)
-        return Return(expr)
-
-    def break_(self):
-        self.eat(Class.BREAK)
-        self.eat(Class.SEMICOLON)
-        return Break()
-
-    def continue_(self):
-        self.eat(Class.CONTINUE)
-        self.eat(Class.SEMICOLON)
-        return Continue()
-
+   
     def type_(self):
         type_ = Type(self.curr.lexeme)
         self.eat(Class.TYPE)
@@ -301,25 +259,6 @@ class Parser:
         else:
             return first
 
-    def logic_term(self):
-        first = self.compare()
-        while self.curr.class_ == Class.AND:
-            op = self.curr.lexeme
-            self.eat(Class.AND)
-            second = self.compare()
-            first = BinOp(op, first, second)
-        return first
-
-    def logic(self):
-        first = self.logic_term()
-        while self.curr.class_ == Class.OR:
-            op = self.curr.lexeme
-            self.eat(Class.OR)
-            second = self.logic_term()
-            first = BinOp(op, first, second)
-        return first
-
-    @restorable
     def is_func_call(self):
         try:
             self.eat(Class.LPAREN)
@@ -335,8 +274,6 @@ class Parser:
     def die(self, text):
         raise SystemExit(text)
 
-    def die_deriv(self, fun):
-        self.die("Derivation error: {}".format(fun))
 
     def die_type(self, expected, found):
         #self.die("Error en declaracion: {}".format(found))

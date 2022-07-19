@@ -53,24 +53,12 @@ class Grapher(Visitor):
         self.visit(node, node.cond)
         self.visit(node, node.block)
 
-    def visit_For(self, parent, node):
-        self.add_node(parent, node)
-        self.visit(node, node.init)
-        self.visit(node, node.cond)
-        self.visit(node, node.step)
-        self.visit(node, node.block)
-
     def visit_FuncImpl(self, parent, node):
         self.add_node(parent, node)
         self.visit(node, node.type_)
         self.visit(node, node.id_)
         self.visit(node, node.params)
         self.visit(node, node.block)
-
-    def visit_FuncCall(self, parent, node):
-        self.add_node(parent, node)
-        self.visit(node, node.id_)
-        self.visit(node, node.args)
 
     def visit_Block(self, parent, node):
         self.add_node(parent, node)
@@ -82,21 +70,11 @@ class Grapher(Visitor):
         for p in node.params:
             self.visit(node, p)
 
-    def visit_Args(self, parent, node):
-        self.add_node(parent, node)
-        for a in node.args:
-            self.visit(node, a)
 
     def visit_Elems(self, parent, node):
         self.add_node(parent, node)
         for e in node.elems:
             self.visit(node, e)
-
-
-    def visit_Return(self, parent, node):
-        self.add_node(parent, node)
-        if node.expr is not None:
-            self.visit(node, node.expr)
 
     def visit_Type(self, parent, node):
         name = node.value

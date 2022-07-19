@@ -57,20 +57,6 @@ class Generator(Visitor):
         self.newline()
         self.visit(node, node.block)
 
-    def visit_For(self, parent, node):
-        self.visit(node, node.init)
-        self.newline()
-        self.indent()
-        self.append('while ')
-        self.visit(node, node.cond)
-        self.append(':')
-        self.newline()
-        self.visit(node, node.block)
-        self.level += 1
-        self.indent()
-        self.visit(node, node.step)
-        self.level -= 1
-
     def visit_FuncImpl(self, parent, node):
         self.append('def ')
         self.append(node.id_.value)
@@ -130,24 +116,12 @@ class Generator(Visitor):
                 self.append(', ')
             self.visit(p, p.id_)
 
-    def visit_Args(self, parent, node):
-        for i, a in enumerate(node.args):
-            if i > 0:
-                self.append(', ')
-            self.visit(node, a)
 
     def visit_Elems(self, parent, node):
         for i, e in enumerate(node.elems):
             if i > 0:
                 self.append(', ')
             self.visit(node, e)
-
-
-    def visit_Return(self, parent, node):
-        self.append('return')
-        if node.expr is not None:
-            self.append(' ')
-            self.visit(node, node.expr)
 
     def visit_Type(self, parent, node):
         pass

@@ -1,9 +1,0 @@
-int main() {
-	int x;
-	x=5;
-	
-    while (x) {
-        print ( "%d ", x * 2 );
-        x = x - 1;
-    }
-}

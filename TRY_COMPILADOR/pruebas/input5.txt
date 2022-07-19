@@ -1,7 +1,0 @@
-int main() {
-	boolean a;
-    a = true;
-    if(a){
-    print("Correcto");
-    }
-}

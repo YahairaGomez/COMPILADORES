@@ -4,13 +4,8 @@ from enum import Enum, auto
 class Class(Enum):
     PLUS = auto()
     MINUS = auto()
-    STAR = auto()
     FWDSLASH = auto()
     PERCENT = auto()
-
-    OR = auto()
-    AND = auto()
-    NOT = auto()
 
     EQ = auto()
     LT = auto()
@@ -37,22 +32,10 @@ class Class(Enum):
     IF = auto()
     ELSE = auto()
     WHILE = auto()
-    FOR = auto()
-
-    BREAK = auto()
-    CONTINUE = auto()
-    RETURN = auto()
     
-    ADDRESS = auto()
-
     ID = auto()
     EOF = auto()
 
-    #Las no
-    INTEGER = auto()
-    STR = auto()
-    WEPA = auto ()
-    BOOLEAN = auto()
 
 
 class Token:

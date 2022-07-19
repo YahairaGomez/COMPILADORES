@@ -43,12 +43,7 @@ class Optimizer(Visitor):
         self.visit(node, node.cond)
         self.visit(node, node.block)
 
-    def visit_For(self, parent, node):
-        self.visit(node, node.init)
-        self.visit(node, node.cond)
-        self.visit(node, node.block)
-        self.visit(node, node.step)
-
+  
     def visit_FuncImpl(self, parent, node):
         self.remove_symbol(parent, node)
         self.visit(node, node.block)
@@ -65,10 +60,6 @@ class Optimizer(Visitor):
 
     def visit_Params(self, parent, node):
         pass
-
-    def visit_Args(self, parent, node):
-        for a in node.args:
-            self.visit(node, a)
 
     def visit_Elems(self, parent, node):
         for e in node.elems:

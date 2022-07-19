@@ -26,9 +26,6 @@ class Symbolizer(Visitor):
     def visit_While(self, parent, node):
         self.visit(node, node.block)
 
-    def visit_For(self, parent, node):
-        self.visit(node, node.block)
-
     def visit_FuncImpl(self, parent, node):
         parent.symbols.put(node.id_.value, node.type_.value, id(parent))
         self.visit(node, node.block)
@@ -48,13 +45,8 @@ class Symbolizer(Visitor):
             self.visit(node, p)
             self.visit(parent.block, p)
 
-    def visit_Args(self, parent, node):
-        pass
 
     def visit_Elems(self, parent, node):
-        pass
-
-    def visit_Return(self, parent, node):
         pass
 
     def visit_Type(self, parent, node):

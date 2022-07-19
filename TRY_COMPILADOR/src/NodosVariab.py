@@ -46,14 +46,6 @@ class While(Node):
         self.block = block
 
 
-class For(Node):
-    def __init__(self, init, cond, step, block):
-        self.init = init
-        self.cond = cond
-        self.step = step
-        self.block = block
-
-
 class FuncImpl(Node):
     def __init__(self, type_, id_, params, block):
         self.type_ = type_
@@ -78,27 +70,9 @@ class Params(Node):
         self.params = params
 
 
-class Args(Node):
-    def __init__(self, args):
-        self.args = args
-
-
 class Elems(Node):
     def __init__(self, elems):
         self.elems = elems
-
-
-class Break(Node):
-    pass
-
-
-class Continue(Node):
-    pass
-
-
-class Return(Node):
-    def __init__(self, expr):
-        self.expr = expr
 
 
 class Type(Node):

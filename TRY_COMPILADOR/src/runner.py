@@ -90,15 +90,6 @@ class Runner(Visitor):
             self.clear_scope(node.block)
             cond = self.visit(node, node.cond)
 
-    def visit_For(self, parent, node):
-        self.visit(node, node.init)
-        cond = self.visit(node, node.cond)
-        while cond:
-            self.init_scope(node.block)
-            self.visit(node, node.block)
-            self.clear_scope(node.block)
-            self.visit(node, node.step)
-            cond = self.visit(node, node.cond)
 
     def visit_FuncImpl(self, parent, node):
         id_ = self.get_symbol(node.id_)
@@ -179,21 +170,6 @@ class Runner(Visitor):
     def visit_Params(self, parent, node):
         pass
 
-    def visit_Args(self, parent, node):
-        fun_parent = self.call_stack[-2]
-        impl = self.global_[fun_parent]
-        self.search_new_call = False
-        args = [self.visit(impl.block, a) for a in node.args]
-        args = [a.value if isinstance(a, Symbol) else a for a in args]
-        fun_child = self.call_stack[-1]
-        impl = self.global_[fun_child]
-        scope = id(impl.block)
-        self.scope[fun_child].append(scope)
-        self.search_new_call = True
-        for p, a in zip(impl.params.params, args):
-            id_ = self.visit(impl.block, p.id_)
-            id_.value = a
-        self.scope[fun_child].pop()
 
     def visit_Elems(self, parent, node):
         id_ = self.get_symbol(parent.id_)
@@ -202,9 +178,6 @@ class Runner(Visitor):
             id_.symbols.put(i, id_.type_, None)
             id_.symbols.get(i).value = value
 
-
-    def visit_Return(self, parent, node):
-        pass
 
     def visit_Type(self, parent, node):
         pass

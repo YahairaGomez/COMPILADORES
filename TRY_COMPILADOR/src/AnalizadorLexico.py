@@ -42,17 +42,9 @@ class Lexer:
             return Token(Class.ELSE, lexeme)
         elif lexeme == 'while':
             return Token(Class.WHILE, lexeme)
-        elif lexeme == 'for':
-            return Token(Class.FOR, lexeme)
-        elif lexeme == 'break':
-            return Token(Class.BREAK, lexeme)
-        elif lexeme == 'continue':
-            return Token(Class.CONTINUE, lexeme)
-        elif lexeme == 'return':
-            return Token(Class.RETURN, lexeme)
-        elif lexeme == 'int' or lexeme == 'char' or lexeme == 'void':
+        elif lexeme == 'int' or lexeme == 'char' or lexeme:
             return Token(Class.TYPE, lexeme)
-        elif lexeme == 'integer' or lexeme == 'str' or lexeme == 'wepa' or lexeme =='boolean':
+        else:
             print("Error de tipo de dato")
         
         return Token(Class.ID, lexeme)
@@ -85,21 +77,7 @@ class Lexer:
             token = Token(Class.STAR, curr)
         elif curr == '/':
             token = Token(Class.FWDSLASH, curr)
-        elif curr == '%':
-            token = Token(Class.PERCENT, curr)
-        elif curr == '&':
-            curr = self.next_char()
-            if curr == '&':
-                token = Token(Class.AND, '&&')
-            else:
-                token = Token(Class.ADDRESS, '&')
-                self.pos -= 1
-        elif curr == '|':
-            curr = self.next_char()
-            if curr == '|':
-                token = Token(Class.OR, '||')
-            else:
-                self.die(curr)
+        
         elif curr == '!':
             curr = self.next_char()
             token = Token(Class.NOT, '!')

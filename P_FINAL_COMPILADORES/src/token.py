@@ -1,4 +1,4 @@
-class Class(Enum):
+class Class():
     operadores={
     '+':"plus",
     '-':"minus",

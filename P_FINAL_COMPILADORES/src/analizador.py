@@ -5,42 +5,6 @@ from Sintactico import Sintactico
 digitos="0123456789"
 letras=string.ascii_letters
 letrasDigitos=letras+digitos
-"Analizador Lexico"
-operadores={
-    '+':"OP_SUM",
-    '-':"OP_RES",
-    '.':"PUNTO",
-    ',': "COMA",
-    '*':"OP_MULTI",
-    '/':"OP_DIV",
-    ':=':"ASSIGN",
-    '=':'EQUAL',
-    '!=':"DIFFERENT",
-    '<':"MENOR",
-    '>':"MAYOR"
-}
-
-dictDelim={
-    '(':"PARENTESIS_IZQ",
-    ')':"PARENTESIS_DER",
-    '{':"LLAVE_INI",
-    '}':"LLAVE_FIN",
-   
-}
-statementList={ #palabra reservada
-    "if":"IF",
-    "while":"WHILE",
-    "integer":"INTEGER",
-    'int':"INT",
-    'string':"STRING",
-    'print:"PRINT"'
-    'read:"READ"'
-    'float':"FLOAT",
-    'Write':"WRITE",
-    "var":"VAR",
-}
-charEvitar=['\t',' ','\n']
-###################################################################################
 class AnalizadorLexico:
     def __init__(self,text):
         self.text=text
@@ -64,6 +28,32 @@ class AnalizadorLexico:
     def getTokens(self):
         for token in self.tokens:
             print(repr(token))  
+    def read_keyword(self):
+        lexeme = self.text[self.pos]
+        #Para ver si son alfanumericos, leo toda la linea
+        while self.pos + 1 < self.len and self.text[self.pos + 1].isalnum():
+            lexeme += self.next_char()
+        
+        if lexeme == 'if':
+            return Token(Class.IF, lexeme)
+        elif lexeme == 'else':
+            return Token(Class.ELSE, lexeme)
+        elif lexeme == 'while':
+            return Token(Class.WHILE, lexeme)
+        elif lexeme == 'int' or lexeme == 'char' or lexeme:
+            return Token(Class.TYPE, lexeme)
+        else:
+            print("Error de tipo de dato")
+        
+        return Token(Class.ID, lexeme)
+    def lex(self):
+        tokens = []
+        while True:
+            curr = self.next_token()
+            tokens.append(curr)
+            if curr.class_ == Class.EOF:
+                break
+        return tokens
     def crearNumero(self):
         numeroString=""
         charActual=self.getChar()
@@ -88,7 +78,7 @@ class AnalizadorLexico:
             except:
                 print(f"Error: Numero incorrecto {numeroString}")
             else:
-                self.tokens.append( Token("NUM",numeroString))
+                self.tokens.append( Token("INT",numeroString))
         else:
             try:
                 if len(numeroString)> 10:
@@ -99,7 +89,7 @@ class AnalizadorLexico:
             except:
                 print(f"Error: Numero incorrecto {numeroString}")
             else:
-                self.tokens.append( Token("NUM",numeroString))
+                self.tokens.append( Token("INT",numeroString))
 
     def crearIdentificador(self):
         identificadorString=""
@@ -148,19 +138,8 @@ class AnalizadorLexico:
                 while self.peekChar() != None and self.peekChar()!='\'':
                     contenidoString+=self.getChar()
                 self.puntero+=1
-                self.tokens.append(Token("STR",contenidoString))
+                self.tokens.append(Token("STRING",contenidoString))
 
 
             else:
                 print(f"Error: Caracter invalido \'{self.getChar()}\'")
-
-###################################################################################
-if __name__ == "__main__":
-    codigoTxt=open("main.txt","r")
-    analizador=AnalizadorLexico(codigoTxt.read())
-    codigoTxt.close()
-    list_tokens=analizador.tokens
-    
-#2da parte
-    analizadorsintatico=Sintactico()
-    analizadorsintatico.analizador(list_tokens)

@@ -1,0 +1,68 @@
+# this is an LL(1) grammar
+Program -> main Block
+Block -> { Decls Stmts }
+Decls -> Decls_1
+Decls_1 -> Decl Decls_1 
+Decls_1 -> ε
+Decl -> Type id ;
+Type -> int 
+Type -> float
+Type -> bool 
+Type -> string
+Stmts -> Stmts_1
+Stmts_1 -> Stmt Stmts_1 
+Stmts_1 -> ε
+Stmt -> id = Bool ; 
+Stmt -> if Fif 
+Stmt -> while ( Bool ) Stmt endwhile 
+Stmt -> for Ffor 
+Stmt -> break ; 
+Stmt -> print ( Bool ) ;
+Stmt -> Block
+Fif -> ( F(
+F( -> Bool FBool
+FBool -> ) F)
+F) -> Stmt FStmt
+FStmt -> endif 
+FStmt -> else Stmt endif
+Ffor -> ( F(_1
+F(_1 -> Decls FDecls
+FDecls -> ; F;
+F; -> Bool FBool_1 
+F; -> ; ) Stmt endfor
+FBool_1 -> ; F;_1
+F;_1 -> id = Bool ) Stmt endfor 
+F;_1 -> ) Stmt endfor
+Bool -> Join Bool_1
+Bool_1 -> or Join Bool_1 
+Bool_1 -> ε
+Join -> Equality Join_1
+Join_1 -> and Equality Join_1 
+Join_1 -> ε
+Equality -> Rel Equality_1
+Equality_1 -> eq Rel Equality_1 
+Equality_1 -> neq Rel Equality_1 
+Equality_1 -> ε
+Rel -> Expr FExpr
+FExpr -> le Expr 
+FExpr -> leq Expr 
+FExpr -> geq Expr 
+FExpr -> ge Expr 
+FExpr -> ε
+Expr -> Term Expr_1
+Expr_1 -> + Term Expr_1 
+Expr_1 -> - Term Expr_1 
+Expr_1 -> ε
+Term -> Unary Term_1
+Term_1 -> * Unary Term_1 
+Term_1 -> / Unary Term_1 
+Term_1 -> ε
+Unary -> ! Unary 
+Unary -> Factor
+Factor -> ( Bool ) 
+Factor -> id 
+Factor -> num 
+Factor -> real 
+Factor -> true 
+Factor -> false 
+Factor -> str
